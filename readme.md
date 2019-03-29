@@ -1,82 +1,60 @@
-# @carnesen/run-and-exit [![Build Status](https://travis-ci.com/carnesen/run-and-exit.svg?branch=master)](https://travis-ci.com/carnesen/run-and-exit)
+# @carnesen/run-and-catch [![Build Status](https://travis-ci.com/carnesen/run-and-catch.svg?branch=master)](https://travis-ci.com/carnesen/run-and-catch)
 
-Run a function, `console.log` the result, and `process.exit`
+Run a function expecting it to throw
 
 ## Install
 
 ```
-$ npm install @carnesen/run-and-exit
+$ npm install @carnesen/run-and-catch
 ```
 This package includes runtime JavaScript files suitable for Node.js >=8 as well as the corresponding TypeScript type declarations.
 
 ## Usage
-Here's a JavaScript example with an `async` function that fails:
 
+Here is an example of running a function that throws:
 ```js
-// example.js
-const { runAndExit } = require('@carnesen/run-and-exit');
-const { readFile } = require('fs');
-const { promisify } = require('util');
+const { runAndCatch } = require('@carnesen/run-and-catch');
 
-runAndExit(async () => {
-  const fileContents = await promisify(readFile)('/foo/bar/baz', 'utf8');
-  return fileContents;
-});
+function throwError(message: string) {
+  throw new Error(message);
+}
+
+const err = runAndCatch(throwError, 'Boo!');
+
+console.log(err.message);
+// Boo!
 ```
 
-```
-$ node example.js
-{ Error: ENOENT: no such file or directory, open '/foo/bar/baz'
-  errno: -2,
-  code: 'ENOENT',
-  syscall: 'open',
-  path: '/foo/bar/baz' }
-$ echo $?
-1
-```
+Conversely, if the function does NOT throw when invoked, `runAndCatch` DOES throw. 
 
-Here's a TypeScript example with a synchronous function that succeeds:
-
-```ts
-// example.ts
-import { runAndExit } from '@carnesen/run-and-exit';
-
-const concat = (a: string, b: string) => `${a}-${b}`;
-runAndExit(concat, 'foo', 'bar');
-```
-
-```
-$ ts-node example.ts
-foo-bar
-$ echo $?
-0
-```
 `runAndExit` is intelligently typed in the sense that, continuing the previous example, the TypeScript compiler would complain if you tried this:
 ```ts
 // NOT OK
-runAndExit(concat, 'foo', 3);
+runAndCatch(throwError, 3);
 // ^^ error TS2345: Argument of type '3' is not assignable to parameter of type 'string'.
 ```
-This is achieved using ["rest parameters with tuple types"](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#rest-parameters-with-tuple-types), new in TypeScript 3.0. If you're using an older version of TypeScript, `runAndExit` may not work as advertised here.
+This is achieved using ["rest parameters with tuple types"](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#rest-parameters-with-tuple-types), new in TypeScript 3.0. If you're using an older version of TypeScript, `runAndCatch` may not work as advertised here.
 
 ## API
 
-### runAndExit(fn, ...args)
+### runAndCatch(fn, ...args)
 
-Runs the provided function `fn` with arguments `args`.
+Runs the provided function `fn` with arguments `args`. Returns the exception if one is raised or throws one otherwise.
 
 #### fn
 
-A function. Can return/throw a value synchronously or return a `Promise` (e.g. an `async` function). If `fn` throws or returns a promise that rejects, the exception is `console.log`ged and then `process.exit(1)` is called. In particular this means that if you don't want a show a stack trace in the terminal, `fn` should throw a string instead of an `Error` object. If `fn` returns a non-`Promise` value or a `Promise` that resolves, the value is `console.log`ged and then `process.exit(0)` is called.
+A function. Can return/throw a value synchronously or return a `Promise` (e.g. an `async` function).
 
 #### args
 
 Arguments passed to `fn`. If using TypeScript, `args` must be assignable to the parameter types of `fn` just as if you were calling `fn(args)` directly.
 
 ## More information
-This micro-package has a half dozen unit tests with 100% coverage. If you want to see more examples of how it works, [those tests](src/__tests__) would be a good place to start. If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on this project's repository on GitHub.
+This micro-package has a half dozen unit tests with 100% coverage. If you want to see more examples of how it works, [those tests](src/index.test.ts) would be a good place to start. If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on this project's repository on GitHub.
 
 ## Related
+
+- [@carnesen/run-and-exit](https://github.com/carnesen/run-and-exit): Run a function, `console.log` the result, then `process.exit`.
 
 - [@carnesen/cli](https://github.com/carnesen/cli): A library for building Node.js command-line interfaces
 

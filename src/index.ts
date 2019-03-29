@@ -1,14 +1,16 @@
-export function runAndExit<T extends any[]>(fn: (...args: T) => any, ...args: T) {
-  (async () => {
-    try {
-      const value = await fn(...args);
-      if (typeof value !== 'undefined') {
-        console.log(value);
-      }
-      process.exit(0);
-    } catch (ex) {
-      console.log(ex);
-      process.exit(1);
-    }
-  })();
+export async function runAndCatch<T extends any[]>(fn: (...args: T) => any, ...args: T) {
+  let shouldThrow = false;
+  let exception: any;
+  try {
+    // We expect the following line to throw
+    await fn(...args);
+    // The previous line did not throw, which is unexpected
+    shouldThrow = true;
+  } catch (ex) {
+    exception = ex;
+  }
+  if (shouldThrow) {
+    throw new Error('Expected function to throw');
+  }
+  return exception;
 }

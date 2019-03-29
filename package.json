@@ -1,18 +1,18 @@
 {
-  "name": "@carnesen/run-and-exit",
-  "description": "Run an async function, console.log the result, and exit",
-  "version": "0.2.0",
+  "name": "@carnesen/run-and-catch",
+  "description": "Run a function with the provided arguments expecting it to throw",
+  "version": "0.0.0-0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "engines": {
     "node": ">=8.0.0"
   },
   "scripts": {
-    "build": "rimraf lib && tsc",
-    "example": "node example.js && ts-node src/example.ts",
-    "lint": "tslint --project .",
+    "build": "tsc --project tsconfig.build.json",
+    "build:clean": "rimraf lib && npm run build",
+    "lint": "tslint --project tsconfig.build.json",
     "lint:fix": "npm run lint -- --fix",
-    "test": "npm run lint && npm run test:unit && npm run build && npm run example",
+    "test": "npm run lint && npm run test:unit && npm run build",
     "test:unit": "jest --coverage src",
     "test:watch": "npm run test:unit -- --watch",
     "preversion": "npm test",
@@ -32,18 +32,17 @@
     "typescript": "3.3.3"
   },
   "files": [
-    "src/index.ts",
-    "lib/index.js*",
-    "lib/index.d.ts*"
+    "src/",
+    "lib/"
   ],
   "author": {
     "name": "Chris Arnesen",
     "email": "chris.arnesen@gmail.com"
   },
-  "repository": "git://github.com/carnesen/run-and-exit.git",
+  "repository": "git://github.com/carnesen/run-and-catch.git",
   "bugs": {
-    "url": "https://github.com/carnesen/run-and-exit/issues"
+    "url": "https://github.com/carnesen/run-and-catch/issues"
   },
-  "homepage": "https://github.com/carnesen/run-and-exit",
+  "homepage": "https://github.com/carnesen/run-and-catch",
   "license": "MIT"
 }
