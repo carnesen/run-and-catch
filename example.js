@@ -1,9 +1,22 @@
 // example.js
-const { runAndExit } = require('.');
-const { readFile } = require('fs');
-const { promisify } = require('util');
+const { runAndCatch } = require('.');
 
-runAndExit(async () => {
-  const fileContents = await promisify(readFile)(__filename, 'utf8');
-  return fileContents;
-});
+function throwAnError(message) {
+  throw new Error(message);
+}
+
+function doNothing() { }
+
+(async () => {
+  const returnValue = await runAndCatch(throwAnError, 'something bad happened');
+  console.log(`Q: Return value is an Error? A: ${returnValue instanceof Error}.`);
+  console.log(`returnValue.message: "${returnValue.message}"`);
+  try {
+    await runAndCatch(doNothing);
+  } catch (exception) {
+    console.log(`Exception message: ${exception.message}`);
+  }
+})();
+// Q: Return value is an Error? A: true.
+// returnValue.message: "something bad happened"
+// Exception message: Expected function to throw
