@@ -1,5 +1,4 @@
-# @carnesen/run-and-catch [![Build Status](https://github.com/carnesen/run-and-catch/workflows/tests/badge.svg)
-
+# @carnesen/run-and-catch [![Build Status](https://github.com/carnesen/run-and-catch/workflows/tests/badge.svg)](https://github.com/carnesen/run-and-catch/actions)
 Run a function expecting it to throw
 
 ## Install
