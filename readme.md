@@ -1,4 +1,4 @@
-# @carnesen/run-and-catch [![Build Status](https://travis-ci.com/carnesen/run-and-catch.svg?branch=master)](https://travis-ci.com/carnesen/run-and-catch)
+# @carnesen/run-and-catch [![Build Status](https://github.com/carnesen/run-and-catch/workflows/tests/badge.svg)
 
 Run a function expecting it to throw
 
