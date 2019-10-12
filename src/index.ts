@@ -1,16 +1,41 @@
-export async function runAndCatch<T extends any[]>(fn: (...args: T) => any, ...args: T) {
-  let shouldThrow = false;
-  let exception: any;
+/**
+  Calls and `await`s `fn(args)`. _Returns_ the exception if `fn` throws or
+  _throws_ if `fn` does _not_.
+  */
+export async function runAndCatch<TArgs extends any[]>(
+  fn: (...args: TArgs) => any,
+  ...args: TArgs
+) {
+  let resolvedValue: any;
   try {
     // We expect the following line to throw
-    await fn(...args);
+    resolvedValue = await fn(...args);
     // The previous line did not throw, which is unexpected
-    shouldThrow = true;
-  } catch (ex) {
-    exception = ex;
+  } catch (exception) {
+    return exception;
   }
-  if (shouldThrow) {
-    throw new Error('Expected function to throw');
+  throw new Error(
+    `Expected the provided function to throw. Instead it returned ${resolvedValue}`,
+  );
+}
+
+/**
+  Calls `fn(args)`. _Returns_ the exception if `fn` throws or _throws_ if
+  `fn` does _not_.
+  */
+export function runAndCatchSync<TArgs extends any[]>(
+  fn: (...args: TArgs) => any,
+  ...args: TArgs
+) {
+  let returnedValue: any;
+  try {
+    // We expect the following line to throw
+    returnedValue = fn(...args);
+    // The previous line did not throw, which is unexpected
+  } catch (exception) {
+    return exception;
   }
-  return exception;
+  throw new Error(
+    `Expected the provided function to throw. Instead it returned ${returnedValue}`,
+  );
 }

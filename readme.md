@@ -1,5 +1,6 @@
-# @carnesen/run-and-catch [![Build Status](https://github.com/carnesen/run-and-catch/workflows/tests/badge.svg)](https://github.com/carnesen/run-and-catch/actions)
-Run a function expecting it to throw
+# @carnesen/run-and-catch [![Build Status](https://travis-ci.com/carnesen/run-and-catch.svg?branch=master)](https://travis-ci.com/carnesen/run-and-catch)
+
+Calls a function `fn` and _returns_ the exception if `fn` throws or _throws_ if `fn` does _not_ throw. Mostly useful for unit testing.
 
 ## Install
 
@@ -14,17 +15,14 @@ Here is an example of running a function that throws:
 ```js
 const { runAndCatch } = require('@carnesen/run-and-catch');
 
-function throwError(message: string) {
+async function rejects(message: string) {
   throw new Error(message);
 }
 
-const err = runAndCatch(throwError, 'Boo!');
-
-console.log(err.message);
+const exception = rejects(reject, 'Boo!');
+console.log(exception.message);
 // Boo!
 ```
-
-Conversely, if the function does NOT throw when invoked, `runAndCatch` DOES throw. 
 
 `runAndExit` is intelligently typed in the sense that, continuing the previous example, the TypeScript compiler would complain if you tried this:
 ```ts
@@ -32,24 +30,27 @@ Conversely, if the function does NOT throw when invoked, `runAndCatch` DOES thro
 runAndCatch(throwError, 3);
 // ^^ error TS2345: Argument of type '3' is not assignable to parameter of type 'string'.
 ```
-This is achieved using ["rest parameters with tuple types"](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#rest-parameters-with-tuple-types), new in TypeScript 3.0. If you're using an older version of TypeScript, `runAndCatch` may not work as advertised here.
 
 ## API
 
-### runAndCatch(fn, ...args)
+### runAndCatch(fn, ...args): Promise<exception>
 
-Runs the provided function `fn` with arguments `args`. Returns the exception if one is raised or throws one otherwise.
+Runs the provided function `fn` with arguments `args`. Returns a promise that _resolves_ to the value of the exception thrown by `fn` if it throws, or _throws_ an `Error` if `fn` does NOT throw.
 
 #### fn
 
-A function. Can return/throw a value synchronously or return a `Promise` (e.g. an `async` function).
+A function. Can return/throw a value synchronously or return a `Promise` (e.g. an `async` function). In either case, `runAndCatch` will `await fn(args)`.
 
 #### args
 
 Arguments passed to `fn`. If using TypeScript, `args` must be assignable to the parameter types of `fn` just as if you were calling `fn(args)` directly.
 
+### runAndCatchSync(fn, ...args): exception
+
+Same as `runAndCatch` above, but `runAndCatch` works for either ordinary or `async` functions whereas `runAndCatchSync` is only meant to work with ordinary functions and returns or throws synchronously instead of returning a `Promise`.
+
 ## More information
-This micro-package has a half dozen unit tests with 100% coverage. If you want to see more examples of how it works, [those tests](src/index.test.ts) would be a good place to start. If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on this project's repository on GitHub.
+This micro-package has a half dozen unit tests with 100% coverage. If you want to see more examples of how it works, [those tests](src/index.test.ts) would be a good place to start. If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on [this project's repository on GitHub](https://github.com/carnesen/run-and-catch).
 
 ## Related
 
