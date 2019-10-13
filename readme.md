@@ -15,11 +15,11 @@ Here is an example of running a function that throws:
 ```js
 const { runAndCatch } = require('@carnesen/run-and-catch');
 
-async function rejects(message: string) {
+async function throwsAsync(message: string) {
   throw new Error(message);
 }
 
-const exception = rejects(reject, 'Boo!');
+const exception = throwsAsync(reject, 'Boo!');
 console.log(exception.message);
 // Boo!
 ```
@@ -27,7 +27,7 @@ console.log(exception.message);
 `runAndExit` is intelligently typed in the sense that, continuing the previous example, the TypeScript compiler would complain if you tried this:
 ```ts
 // NOT OK
-runAndCatch(throwError, 3);
+runAndCatch(throwsAsync, 3);
 // ^^ error TS2345: Argument of type '3' is not assignable to parameter of type 'string'.
 ```
 
