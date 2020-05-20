@@ -1,4 +1,4 @@
-# @carnesen/run-and-catch [![Build Status](https://travis-ci.com/carnesen/run-and-catch.svg?branch=master)](https://travis-ci.com/carnesen/run-and-catch)
+# @carnesen/run-and-catch [![Build Status](https://github.com/carnesen/run-and-catch/workflows/test/badge.svg)](https://github.com/carnesen/run-and-catch/actions?query=workflow%3Atest+branch%3Amaster)
 
 Calls a function `fn` and _returns_ the exception if `fn` throws or _throws_ if `fn` does _not_ throw. Mostly useful for unit testing.
 
