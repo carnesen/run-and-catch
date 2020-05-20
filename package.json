@@ -1,7 +1,7 @@
 {
   "name": "@carnesen/run-and-catch",
   "description": "Run a function with the provided arguments expecting it to throw",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "engines": {
