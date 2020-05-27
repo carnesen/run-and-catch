@@ -5,7 +5,7 @@
 export async function runAndCatch<TArgs extends any[]>(
   fn: (...args: TArgs) => any,
   ...args: TArgs
-) {
+): Promise<any> {
   let resolvedValue: any;
   try {
     // We expect the following line to throw
@@ -26,7 +26,7 @@ export async function runAndCatch<TArgs extends any[]>(
 export function runAndCatchSync<TArgs extends any[]>(
   fn: (...args: TArgs) => any,
   ...args: TArgs
-) {
+): any {
   let returnedValue: any;
   try {
     // We expect the following line to throw
