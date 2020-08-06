@@ -1,44 +1,47 @@
 {
-  "name": "@carnesen/run-and-catch",
-  "description": "Run a function with the provided arguments expecting it to throw",
-  "version": "0.4.0",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "engines": {
-    "node": ">=10.0.0"
-  },
-  "scripts": {
-    "build": "rimraf lib/ && tsc",
-    "lint": "eslint --ext .ts src/",
-    "fix": "npm run lint -- --fix",
-    "test": "npm run lint && npm run unit-test && npm run build",
-    "unit-test": "jest --coverage src"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "@carnesen/tsconfig": "0.2.0",
-    "@types/jest": "25.2.3",
-    "@types/node": "14.0.5",
-    "eslint": "7.1.0",
-    "eslint-config-carnesen": "2.0.0",
-    "jest": "26.0.1",
-    "rimraf": "3.0.2",
-    "ts-jest": "26.0.0",
-    "ts-node": "8.10.1",
-    "typescript": "3.9.3"
-  },
-  "files": [
-    "src/",
-    "lib/"
-  ],
-  "author": {
-    "name": "Chris Arnesen",
-    "email": "chris.arnesen@gmail.com"
-  },
-  "repository": "git://github.com/carnesen/run-and-catch.git",
-  "bugs": {
-    "url": "https://github.com/carnesen/run-and-catch/issues"
-  },
-  "homepage": "https://github.com/carnesen/run-and-catch",
-  "license": "MIT"
+	"name": "@carnesen/run-and-catch",
+	"description": "Calls a function and throws if it doesn't and doesn't if it does",
+	"version": "0.4.1",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"engines": {
+		"node": ">=10.0.0"
+	},
+	"scripts": {
+		"build": "rimraf lib/ && tsc",
+		"lint": "eslint --ext .js,.ts example.js src/",
+		"fix": "npm run lint -- --fix",
+		"test": "npm run build && npm run lint && npm run unit-test && npm pack",
+		"unit-test": "jest --coverage src",
+		"prepublishOnly": "npm test"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@carnesen/tsconfig": "0.4.0",
+		"@types/jest": "26.0.9",
+		"@types/node": "14.0.27",
+		"eslint": "7.6.0",
+		"eslint-config-carnesen": "4.4.0",
+		"jest": "26.2.2",
+		"rimraf": "3.0.2",
+		"ts-jest": "26.1.4",
+		"ts-node": "8.10.2",
+		"typescript": "3.9.7"
+	},
+	"files": [
+		"src",
+		"!src/**/__tests__",
+		"lib/",
+		"!lib/**/__tests__"
+	],
+	"author": {
+		"name": "Chris Arnesen",
+		"email": "chris.arnesen@gmail.com"
+	},
+	"repository": "github:carnesen/run-and-catch.git",
+	"bugs": {
+		"url": "https://github.com/carnesen/run-and-catch/issues"
+	},
+	"homepage": "https://github.com/carnesen/run-and-catch#readme",
+	"license": "MIT"
 }

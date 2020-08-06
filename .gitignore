@@ -1,5 +1,9 @@
 ### Node ###
 
+# Package
+*.tgz
+
+# Coverage
 /coverage
 
 # Logs
