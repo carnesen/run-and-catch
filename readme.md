@@ -1,62 +1,67 @@
-# @carnesen/run-and-catch [![Build Status](https://github.com/carnesen/run-and-catch/workflows/test/badge.svg)](https://github.com/carnesen/run-and-catch/actions?query=workflow%3Atest+branch%3Amaster)
+# @carnesen/run-and-catch
 
-Calls a function `fn` and _returns_ the exception if `fn` throws or _throws_ if `fn` does _not_ throw. Mostly useful for unit testing.
+[![Build Status](https://github.com/carnesen/run-and-catch/workflows/test/badge.svg)](https://github.com/carnesen/run-and-catch/actions?query=workflow%3Atest+branch%3Amaster) [![npm version badge](https://badge.fury.io/js/%40carnesen%2Fcli.svg)](https://www.npmjs.com/package/@carnesen/run-and-catch) [![github stars badge](https://img.shields.io/github/stars/carnesen/run-and-catch)](https://github.com/carnesen/run-and-catch)
+
+Calls a function and throws if it doesn't and doesn't if it does. Useful for unit testing throws in async functions.
 
 ## Install
 
 ```
 $ npm install @carnesen/run-and-catch
 ```
-This package includes runtime JavaScript files suitable for Node.js >=8 as well as the corresponding TypeScript type declarations.
+This package includes runtime JavaScript files (ES2017 + CommonJS) and their corresponding TypeScript type declarations.
 
 ## Usage
 
-Here is an example of running a function that throws:
-```js
-const { runAndCatch } = require('@carnesen/run-and-catch');
+Here is an example of a unit test for an async function that throws:
+```typescript
+import { runAndCatch } from '@carnesen/run-and-catch';
 
-async function throwsAsync(message: string) {
-  throw new Error(message);
+async function myFunc(message: string) {
+   if (message.startsWith('_')) {
+      throw new Error('Message is not allowed to start with _');
+   }
 }
 
-const exception = throwsAsync(reject, 'Boo!');
-console.log(exception.message);
-// Boo!
+describe(myFunc.name, () => {
+   it('throws "not allowed" if message starts with _', async () => {
+      // THE CLUNKY WAY. DON'T DO IT LIKE THIS.
+      try {
+         await myFunc('_foo');
+         throw new Error('The previous line should have thrown');
+      } catch (exception) {
+         expect(exception.message).toMatch('not allowed');
+      }
+
+      // THE BETTER WAY WITH @carnesen/run-and-catch
+      const exception = await runAndCatch(myFunc, '_foo');
+      expect(exception.message).toMatch('not allowed');
+      expect(exception.code).toBe('BAD_MESSAGE');
+   });
+});
 ```
 
-`runAndExit` is intelligently typed in the sense that, continuing the previous example, the TypeScript compiler would complain if you tried this:
-```ts
+`runAndCatch` is intelligently typed in the sense that the TypeScript compiler would complain if you tried this:
+```typescript
 // NOT OK
-runAndCatch(throwsAsync, 3);
+runAndCatch(myFunc, 3);
 // ^^ error TS2345: Argument of type '3' is not assignable to parameter of type 'string'.
 ```
-
-## API
-
-### runAndCatch(fn, ...args): Promise<exception>
-
-Runs the provided function `fn` with arguments `args`. Returns a promise that _resolves_ to the value of the exception thrown by `fn` if it throws, or _throws_ an `Error` if `fn` does NOT throw.
-
-#### fn
-
-A function. Can return/throw a value synchronously or return a `Promise` (e.g. an `async` function). In either case, `runAndCatch` will `await fn(args)`.
-
-#### args
-
-Arguments passed to `fn`. If using TypeScript, `args` must be assignable to the parameter types of `fn` just as if you were calling `fn(args)` directly.
-
-### runAndCatchSync(fn, ...args): exception
-
-Same as `runAndCatch` above, but `runAndCatch` works for either ordinary or `async` functions whereas `runAndCatchSync` is only meant to work with ordinary functions and returns or throws synchronously instead of returning a `Promise`.
+`runAndCatch` throws if the function does _not_ throw:
+```typescript
+// throws "Expected the provided function to throw."
+runAndCatch(myFunc, 'hello');
+```
+This package also exports a synchronous function runner, `runAndCatchSync` that is just like `runAndCatch` except it does not `await` on the result of function call. 
 
 ## More information
-This micro-package has a half dozen unit tests with 100% coverage. If you want to see more examples of how it works, [those tests](src/index.test.ts) would be a good place to start. If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on [this project's repository on GitHub](https://github.com/carnesen/run-and-catch).
+This micro-package has a half dozen unit tests with 100% coverage. Check out [those tests](src/__tests__/index.test.ts) for more examples. If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on [this project's repository on GitHub](https://github.com/carnesen/run-and-catch).
 
 ## Related
 
 - [@carnesen/run-and-exit](https://github.com/carnesen/run-and-exit): Run a function, `console.log` the result, then `process.exit`.
 
-- [@carnesen/cli](https://github.com/carnesen/cli): A library for building Node.js command-line interfaces
+- [@carnesen/cli](https://github.com/carnesen/cli): Command-line interfaces for Node.js and the web
 
 ## License
 
