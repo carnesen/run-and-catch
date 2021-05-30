@@ -5,7 +5,7 @@
  * @param args Arguments with which to invoke the function
  */
 export async function runAndCatch<TArgs extends any[]>(
-	fn: (...args: TArgs) => any,
+	fn: (...fnArgs: TArgs) => any,
 	...args: TArgs
 ): Promise<any> {
 	let resolvedValue: any;
@@ -28,7 +28,7 @@ export async function runAndCatch<TArgs extends any[]>(
  * @param args Arguments with which to invoke the function
  */
 export function runAndCatchSync<TArgs extends any[]>(
-	fn: (...args: TArgs) => any,
+	fn: (...fnArgs: TArgs) => any,
 	...args: TArgs
 ): any {
 	let returnedValue: any;
