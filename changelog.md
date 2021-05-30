@@ -2,6 +2,8 @@
 
 ## Upcoming
 
+## v0.4.2 (2021-05-29)
+
 - Internal: Update dev dependencies, license, fix lint errors
 
 ## 0.4.1

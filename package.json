@@ -1,7 +1,7 @@
 {
 	"name": "@carnesen/run-and-catch",
 	"description": "Calls a function and throws if it doesn't and doesn't if it does",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
 	"engines": {
