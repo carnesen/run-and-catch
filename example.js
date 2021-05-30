@@ -1,4 +1,5 @@
 // example.js
+
 const { runAndCatch } = require('.');
 
 function throwAnError(message) {
@@ -7,6 +8,7 @@ function throwAnError(message) {
 
 function doNothing() {}
 
+/* eslint-disable no-console */
 (async () => {
 	const returnValue = await runAndCatch(throwAnError, 'something bad happened');
 	console.log(

@@ -1,5 +1,9 @@
 # **@carnesen/run-and-catch** changelog
 
+## Upcoming
+
+- Internal: Update dev dependencies, license, fix lint errors
+
 ## 0.4.1
 
 ## Internal

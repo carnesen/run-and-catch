@@ -55,6 +55,7 @@ runAndCatch(myFunc, 'hello');
 This package also exports a synchronous function runner, `runAndCatchSync` that is just like `runAndCatch` except it does not `await` on the result of function call. 
 
 ## More information
+
 This micro-package has a half dozen unit tests with 100% coverage. Check out [those tests](src/__tests__/index.test.ts) for more examples. If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on [this project's repository on GitHub](https://github.com/carnesen/run-and-catch).
 
 ## Related
