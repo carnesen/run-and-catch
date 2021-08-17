@@ -16,9 +16,9 @@ export async function runAndCatch<TArgs extends any[]>(
 	} catch (exception) {
 		return exception;
 	}
-	throw new Error(
-		`Expected the provided function to throw. Instead it returned ${resolvedValue}`,
-	);
+	const stringifiedValue = JSON.stringify(resolvedValue);
+	const message = `Expected the provided function to throw. Instead it resolved ${stringifiedValue}`;
+	throw new Error(message);
 }
 
 /**
@@ -39,7 +39,7 @@ export function runAndCatchSync<TArgs extends any[]>(
 	} catch (exception) {
 		return exception;
 	}
-	throw new Error(
-		`Expected the provided function to throw. Instead it returned ${returnedValue}`,
-	);
+	const stringifiedValue = JSON.stringify(returnedValue);
+	const message = `Expected the provided function to throw. Instead it returned ${stringifiedValue}`;
+	throw new Error(message);
 }

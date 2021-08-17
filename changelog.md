@@ -2,6 +2,8 @@
 
 ## Upcoming
 
+- Fix: Returned objects showed up in the error message as "[object Object]". Now instead we explicitly call JSON.stringify on the returned/resolved object.
+
 ## v0.4.2 (2021-05-29)
 
 - Internal: Update dev dependencies, license, fix lint errors
