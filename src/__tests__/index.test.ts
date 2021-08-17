@@ -16,10 +16,13 @@ describe(runAndCatch.name, () => {
 
 	it('throws if the provided function does not', async () => {
 		try {
-			await runAndCatch(() => {});
+			await runAndCatch(() => ({ prop: 'hello' }));
 			throw new Error('this line should not be reached');
-		} catch (ex) {
-			expect(ex.message).toMatch(/expected the provided function to throw/i);
+		} catch (exception) {
+			expect(exception.message).toMatch(
+				/expected the provided function to throw/i,
+			);
+			expect(exception.message).toMatch('"prop":"hello"');
 		}
 	});
 });
